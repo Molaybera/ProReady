@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProReady | Visual Workflow</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@500;700;900&display=swap');
+
+        /* CSS Variables */
+        :root {
+            --bg-dark: #070a13;
+            --bg-darker: #03050a;
+            --neon-blue: #0ea5e9;
+            --neon-green: #10b981;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --shadow-blue: 0 0 30px rgba(14, 165, 233, 0.15);
+            --shadow-green: 0 0 30px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, .brand-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+        }
+
+        .glowing-border-blue { box-shadow: var(--shadow-blue); border-color: rgba(14, 165, 233, 0.3); }
+        .glowing-border-green { box-shadow: var(--shadow-green); border-color: rgba(16, 185, 129, 0.3); }
+
+        /* Typography Utilities */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
+        }
+
+        /* Particle Background */
+        #particles {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, var(--bg-dark), var(--bg-darker));
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: float 10s infinite linear;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+            perspective: 500px;
+            transform: scale(1.2);
+        }
+
+        /* Common Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- SECTION 1: HERO --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            word-spacing: 5px;
+        }
+
+        .hero h2 span {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .btn-explore {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--text-main);
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.2);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-explore:hover {
+            background: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.5;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--neon-blue));
+        }
+
+        /* --- WORKFLOW CONTAINER & TIMELINE --- */
+        .workflow-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px;
+        }
+
+        .timeline-track {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(-50%);
+            border-radius: 4px;
+            z-index: 0;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(to bottom, var(--neon-blue), var(--neon-green), var(--neon-blue));
+            background-size: 100% 200%;
+            box-shadow: 0 0 20px var(--neon-blue);
+            border-radius: 4px;
+            animation: gradient-shift 3s infinite linear;
+            transition: height 0.1s ease-out;
+        }
+
+        .step-node {
+            position: absolute;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-dark);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .step-node.active {
+            border-color: var(--neon-blue);
+            background: var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .step {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20vh;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .step-content {
+            width: 45%;
+        }
+
+        /* Desktop Layout Alternating */
+        @media (min-width: 900px) {
+            .step:nth-child(odd) .step-content {
+                margin-left: auto;
+                padding-left: 50px;
+            }
+            .step:nth-child(even) .step-content {
+                margin-right: auto;
+                padding-right: 50px;
+            }
+        }
+
+        /* --- SECTION 2: LOGIN --- */
+        #login .glass-panel {
+            padding: 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-icon-wrap {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(14, 165, 233, 0.1);
+            border: 2px solid rgba(14, 165, 233, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.2);
+        }
+
+        /* --- SECTION 3: MATCH DETAILS --- */
+        #match-details .glass-panel {
+            padding: 40px;
+        }
+
+        .input-mock {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .step.active .input-mock {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* --- SECTION 4: PLAN GENERATION --- */
+        #plan-gen {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .plan-center-card {
+            padding: 50px 30px;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            z-index: 10;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--neon-blue);
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        .ready-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16,185,129,0.2) 0%, transparent 70%);
+            border: 2px solid var(--neon-green);
+            margin: 0 auto 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--neon-green);
+        }
+
+        .ready-circle span {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            font-weight: 400;
+        }
+
+        .mini-card {
+            position: absolute;
+            background: var(--glass-bg);
+            border: 1px solid var(--neon-blue);
+            padding: 15px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.2);
+            opacity: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+            z-index: 20;
+        }
+
+        /* End states for mini cards when activated */
+        .step.active .mini-card-1 { transform: translate(calc(-50% - 200px), calc(-50% - 120px)) scale(1); opacity: 1; transition-delay: 0.1s;}
+        .step.active .mini-card-2 { transform: translate(calc(-50% + 200px), calc(-50% - 120px)) scale(1); opacity: 1; transition-delay: 0.2s;}
+        .step.active .mini-card-3 { transform: translate(calc(-50% - 250px), calc(-50% + 20px)) scale(1); opacity: 1; transition-delay: 0.3s;}
+        .step.active .mini-card-4 { transform: translate(calc(-50% + 250px), calc(-50% + 20px)) scale(1); opacity: 1; transition-delay: 0.4s;}
+        .step.active .mini-card-5 { transform: translate(calc(-50%), calc(-50% + 180px)) scale(1); opacity: 1; transition-delay: 0.5s;}
+
+
+        /* --- SECTION 5: PERFORMANCE TRACKING --- */
+        #performance .glass-panel {
+            padding: 40px;
+        }
+
+        .stat-row {
+            margin-bottom: 20px;
+        }
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .progress-bg {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+            border-radius: 4px;
+            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .chart-container {
+            margin-top: 30px;
+            height: 120px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--neon-green);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 2s ease 0.5s;
+            filter: drop-shadow(0 5px 10px rgba(16, 185, 129, 0.4));
+        }
+
+        .step.active .progress-fill { width: var(--target-width); }
+        .step.active .chart-line { stroke-dashoffset: 0; }
+
+        /* --- SECTION 6: VIDEO NETWORK --- */
+        #network {
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .network-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .upload-card, .network-view {
+            position: absolute;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 320px;
+            padding: 30px;
+        }
+
+        .network-view {
+            opacity: 0;
+            transform: scale(1.2);
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .upload-card {
+            text-align: center;
+            z-index: 5;
+        }
+
+        .video-placeholder {
+            background: rgba(0,0,0,0.4);
+            height: 120px;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px dashed rgba(255,255,255,0.2);
+        }
+
+        /* Network nodes */
+        .player-node {
+            position: absolute;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        .player-node.center-node {
+            width: 100px; height: 100px;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.4);
+            z-index: 10;
+        }
+
+        .network-line {
+            position: absolute;
+            background: rgba(14, 165, 233, 0.3);
+            transform-origin: 0 50%;
+            height: 2px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* Active Network States */
+        .step.active .upload-card {
+            opacity: 0;
+            transform: scale(0.8) translateY(-50px);
+            pointer-events: none;
+        }
+        .step.active .network-view {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .step.active .network-line {
+            opacity: 1;
+            transition-delay: 0.5s;
+        }
+
+        /* --- FINAL SECTION --- */
+        .final-section {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            background: radial-gradient(circle at 50% 100%, rgba(14, 165, 233, 0.15), transparent 60%);
+        }
+
+        .final-section h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .final-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+        }
+        .final-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
+            border-radius: 2px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+            100% { transform: translateY(0) scale(1); }
+        }
+        @keyframes pulse-glow {
+            0% { text-shadow: 0 0 10px rgba(14, 165, 233, 0.2); }
+            100% { text-shadow: 0 0 30px rgba(14, 165, 233, 0.8), 0 0 60px rgba(14, 165, 233, 0.4); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 100%; }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 900px) {
+            .timeline-track { left: 30px; }
+            .step-node { left: 30px; }
+            .step-content { width: calc(100% - 70px); margin-left: 70px !important; }
+            .hero h1 { font-size: 3rem; }
+            .hero h2 { font-size: 1.2rem; }
+            .plan-center-card { width: 280px; }
+            
+            /* Adjust mini cards for mobile */
+            .step.active .mini-card-1 { transform: translate(calc(-50% - 100px), calc(-50% - 140px)) scale(0.9); }
+            .step.active .mini-card-2 { transform: translate(calc(-50% + 100px), calc(-50% - 140px)) scale(0.9); }
+            .step.active .mini-card-3 { transform: translate(calc(-50% - 120px), calc(-50% + 140px)) scale(0.9); }
+            .step.active .mini-card-4 { transform: translate(calc(-50% + 120px), calc(-50% + 140px)) scale(0.9); }
+            .step.active .mini-card-5 { transform: translate(-50%, calc(-50% + 200px)) scale(0.9); }
+            
+            #plan-gen { height: 80vh; }
+            .final-section h2 { font-size: 2rem; }
+            
+            /* Coach Mobile Adjustments */
+            .step.active .coach-card-1 { transform: translate(calc(-50% - 100px), calc(-50% - 130px)) scale(0.9); }
+            .step.active .coach-card-2 { transform: translate(calc(-50% + 100px), calc(-50% - 130px)) scale(0.9); }
+            .step.active .coach-card-3 { transform: translate(calc(-50% - 100px), calc(-50% + 130px)) scale(0.9); }
+            .step.active .coach-card-4 { transform: translate(calc(-50% + 100px), calc(-50% + 130px)) scale(0.9); }
+        }
+
+        /* --- COACH WORKFLOW STYLES --- */
+        .transition-banner {
+            text-align: center;
+            padding: 60px 20px;
+            margin: 5vh auto 15vh auto;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        
+        .filter-pills::-webkit-scrollbar { height: 4px; }
+        .filter-pills::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        .filter-pill {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .filter-pill.active {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .search-bar-mock {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .scout-feed-container {
+            display: flex;
+            gap: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .scout-feed-container::after {
+            content: ''; position: absolute; top: 0; right: 0; width: 60px; height: 100%;
+            background: linear-gradient(to left, var(--glass-bg), transparent);
+        }
+
+        .scout-card {
+            min-width: 150px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: left;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateX(40px);
+        }
+
+        .step.active .scout-card {
+            opacity: 1; transform: translateX(0);
+        }
+        .step.active .scout-card:nth-child(1) { transition-delay: 0.1s; }
+        .step.active .scout-card:nth-child(2) { 
+            transition-delay: 0.3s; 
+            border-color: var(--neon-blue); 
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.2); 
+            transform: scale(1.05); 
+            background: rgba(14, 165, 233, 0.05);
+        } /* Simulated selection focus */
+        .step.active .scout-card:nth-child(3) { transition-delay: 0.5s; }
+
+        .scout-thumb {
+            width: 100%; height: 85px; 
+            background: rgba(0,0,0,0.5); 
+            border-radius: 8px; 
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .profile-stat-box {
+            background: rgba(0,0,0,0.3); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            padding: 15px; 
+            border-radius: 12px;
+        }
+
+        .scale-reveal {
+            transform: scale(0.85) translateY(30px);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .step.active .scale-reveal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* End states for coach analytics mini cards */
+        .step.active .coach-card-1 { transform: translate(calc(-50% - 220px), calc(-50% - 100px)) scale(1); opacity: 1; transition-delay: 0.1s;}
+        .step.active .coach-card-2 { transform: translate(calc(-50% + 220px), calc(-50% - 100px)) scale(1); opacity: 1; transition-delay: 0.2s;}
+        .step.active .coach-card-3 { transform: translate(calc(-50% - 220px), calc(-50% + 100px)) scale(1); opacity: 1; transition-delay: 0.3s;}
+        .step.active .coach-card-4 { transform: translate(calc(-50% + 220px), calc(-50% + 100px)) scale(1); opacity: 1; transition-delay: 0.4s;}
+
+        .ecosystem-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 50px;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-muted);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .ecosystem-flow .arrow {
+            color: rgba(255,255,255,0.2);
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+        }
+
+        .ecosystem-flow .highlight-player { color: var(--neon-blue); font-weight: 700; }
+        .ecosystem-flow .highlight-coach { color: var(--neon-green); font-weight: 700; font-size: 1.2rem; text-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Background Elements -->
+    <div class="grid-bg"></div>
+    <div id="particles"></div>
+
+    <!-- SECTION 1: HERO -->
+    <header class="hero" id="home">
+        <div class="logo-container">
+            <h1 class="brand-font">Pro<span style="color: var(--neon-blue);">Ready</span></h1>
+        </div>
+        <h2 class="reveal active"><span>Preparation</span> → <span>Performance</span> → <span style="color: var(--neon-green);">Visibility</span></h2>
+        
+        <a href="#workflow" class="btn-explore reveal active" style="transition-delay: 0.3s;">
+            Explore Workflow
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+        </a>
+
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Scroll to begin</span>
+        </div>
+    </header>
+
+    <!-- WORKFLOW SYSTEM -->
+    <div class="workflow-container" id="workflow">
+        
+        <!-- Center Connecting Line -->
+        <div class="timeline-track">
+            <div class="timeline-progress" id="timeline-progress"></div>
+        </div>
+
+        <!-- SECTION 2: LOGIN -->
+        <section class="step" id="login" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal">
+                <div class="glass-panel glowing-border-blue">
+                    <div class="user-icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="brand-font" style="font-size: 1.5rem;">LOGIN / SIGNUP</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Create your athlete profile to start generating custom workflows.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ENTER MATCH DETAILS -->
+        <section class="step" id="match-details" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal">
+                <div class="glass-panel">
+                    <h3 class="brand-font text-gradient" style="font-size: 1.5rem; margin-bottom: 20px;">ENTER MATCH DETAILS</h3>
+                    
+                    <div class="input-mock">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>Match Date: Next Saturday</span>
+                    </div>
+                    
+                    <div class="input-mock">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                        <span>Sport: Football (Soccer)</span>
+                    </div>
+
+                    <div class="input-mock">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"></path><path d="M5 20v-5"></path><path d="M12 20v-10"></path><path d="M19 20v-15"></path></svg>
+                        <span>Intensity: High Competition</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PLAN GENERATION -->
+        <section class="step" id="plan-gen" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal" style="width: 100%; position: relative; height: 100%;">
+                
+                <!-- Main Card -->
+                <div class="glass-panel plan-center-card glowing-border-blue" id="gen-card">
+                    <!-- State 1: Generating -->
+                    <div id="state-gen">
+                        <div class="spinner"></div>
+                        <h3 class="brand-font text-gradient" style="letter-spacing: 1px;">GENERATING<br>MATCH PLAN</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Analyzing data inputs...</p>
+                    </div>
+
+                    <!-- State 2: Ready -->
+                    <div id="state-ready" style="display: none; opacity: 0; transition: opacity 0.5s;">
+                        <div class="ready-circle">
+                            78%
+                            <span>Ready</span>
+                        </div>
+                        <h3 class="brand-font neon-text" style="color: var(--neon-green);">PLAN READY</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Optimized for peak performance.</p>
+                    </div>
+                </div>
+
+                <!-- Expanding Mini Cards -->
+                <div class="mini-card mini-card-1">🏋️ Training Protocol</div>
+                <div class="mini-card mini-card-2">🏃 Warm-up Routine</div>
+                <div class="mini-card mini-card-3">🥗 Nutrition & Diet</div>
+                <div class="mini-card mini-card-4">🧘 Active Recovery</div>
+                <div class="mini-card mini-card-5">💤 Sleep Cycle Target</div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 5: PERFORMANCE TRACKING -->
+        <section class="step" id="performance" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal">
+                <div class="glass-panel">
+                    <h3 class="brand-font" style="font-size: 1.3rem; margin-bottom: 5px;">MATCH PERFORMANCE</h3>
+                    <p style="color: var(--neon-green); font-weight: 600; font-size: 0.9rem; margin-bottom: 25px;">Performance Improved ↗</p>
+
+                    <div class="stat-row">
+                        <div class="stat-label"><span>Sleep Tracking</span> <span>8.2 hrs</span></div>
+                        <div class="progress-bg"><div class="progress-fill" style="--target-width: 85%;"></div></div>
+                    </div>
+                    
+                    <div class="stat-row">
+                        <div class="stat-label"><span>Workout Completion</span> <span>100%</span></div>
+                        <div class="progress-bg"><div class="progress-fill" style="--target-width: 100%;"></div></div>
+                    </div>
+
+                    <div class="stat-row">
+                        <div class="stat-label"><span>Fatigue Recovery</span> <span>Optimal</span></div>
+                        <div class="progress-bg"><div class="progress-fill" style="--target-width: 70%;"></div></div>
+                    </div>
+
+                    <div class="chart-container">
+                        <svg viewBox="0 0 300 100" width="100%" height="100%" preserveAspectRatio="none">
+                            <!-- Grid lines -->
+                            <path d="M0,25 L300,25 M0,50 L300,50 M0,75 L300,75" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                            <!-- Data line -->
+                            <path class="chart-line" d="M 0,80 Q 40,80 60,60 T 120,50 T 180,30 T 240,40 T 300,10"/>
+                        </svg>
+                        <div style="position: absolute; bottom: -10px; width: 100%; display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted);">
+                            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: VIDEO NETWORK -->
+        <section class="step" id="network" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal" style="width: 100%;">
+                <div class="network-container">
+                    
+                    <!-- View 1: Upload -->
+                    <div class="glass-panel upload-card glowing-border-blue">
+                        <h3 class="brand-font" style="margin-bottom: 10px;">UPLOAD HIGHLIGHT</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-muted);">Share your best moments</p>
+                        
+                        <div class="video-placeholder">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px; font-size: 0.8rem; text-align: left; margin-bottom: 10px;">Title: Match Winning Goal</div>
+                        <div style="background: rgba(14, 165, 233, 0.2); color: var(--neon-blue); padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer;">Publish Video</div>
+                    </div>
+
+                    <!-- View 2: Network -->
+                    <div class="network-view">
+                        <!-- Lines will be drawn via JS, positioning them via CSS initially -->
+                        <div class="network-line" id="nl1" style="width: 120px; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg) translate(60px);"></div>
+                        <div class="network-line" id="nl2" style="width: 150px; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(45deg) translate(75px);"></div>
+                        <div class="network-line" id="nl3" style="width: 130px; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(160deg) translate(65px);"></div>
+                        <div class="network-line" id="nl4" style="width: 140px; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(220deg) translate(70px);"></div>
+
+                        <!-- Nodes -->
+                        <div class="player-node center-node" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </div>
+                        <div class="player-node" style="top: 20%; left: 75%; transform: translate(-50%, -50%);"><span style="font-size:10px;">Scout</span></div>
+                        <div class="player-node" style="top: 80%; left: 80%; transform: translate(-50%, -50%);"><span style="font-size:10px;">Coach</span></div>
+                        <div class="player-node" style="top: 70%; left: 20%; transform: translate(-50%, -50%);"><span style="font-size:10px;">Player</span></div>
+                        <div class="player-node" style="top: 25%; left: 25%; transform: translate(-50%, -50%);"><span style="font-size:10px;">Agent</span></div>
+                        
+                        <h3 class="brand-font neon-text" style="position: absolute; bottom: -40px; font-size: 1.5rem; text-align: center; width: 100%;">PLAYER NETWORK</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- COACH / SCOUT WORKFLOW ADDITIONS          -->
+        <!-- ========================================= -->
+
+        <!-- TRANSITION: PLAYER TO COACH -->
+        <div class="transition-banner reveal" style="margin-bottom: 25vh;">
+            <p style="color: var(--text-muted); font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px;">The Ecosystem Connects</p>
+            <h2 class="brand-font neon-text" style="font-size: 2.8rem; color: var(--text-main); line-height: 1.2;">Now Talent Becomes<br><span style="color: var(--neon-green);">Discoverable</span></h2>
+        </div>
+
+        <!-- SECTION 7: COACH LOGIN -->
+        <section class="step" id="coach-login" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal">
+                <div class="glass-panel glowing-border-green" style="padding: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                    <div class="user-icon-wrap" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.4); box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.2);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="brand-font" style="font-size: 1.5rem;">COACH / SCOUT LOGIN</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Access the discovery engine to find verified local talent backed by performance data.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: SCOUTING FEED -->
+        <section class="step" id="scouting-feed" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal">
+                <div class="glass-panel" style="padding: 30px;">
+                    <h3 class="brand-font text-gradient" style="font-size: 1.4rem; margin-bottom: 20px;">PLAYER NETWORK FEED</h3>
+                    
+                    <div class="search-bar-mock">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <span>Search by sport, region, or readiness...</span>
+                    </div>
+
+                    <div class="filter-pills">
+                        <div class="filter-pill active">Football</div>
+                        <div class="filter-pill">Basketball</div>
+                        <div class="filter-pill">Cricket</div>
+                        <div class="filter-pill">Athletics</div>
+                    </div>
+
+                    <div class="scout-feed-container">
+                        <div class="scout-card">
+                            <div class="scout-thumb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">J. Smith</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">Midfielder • 92%</div>
+                        </div>
+                        <div class="scout-card">
+                            <div class="scout-thumb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                            <div style="font-weight: 600; font-size: 0.9rem; color: var(--neon-blue);">A. Davis</div>
+                            <div style="font-size: 0.7rem; color: var(--neon-green);">Striker • 98% Ready</div>
+                        </div>
+                        <div class="scout-card">
+                            <div class="scout-thumb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                            <div style="font-weight: 600; font-size: 0.9rem;">M. Johnson</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">Defender • 85%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 9: PLAYER PROFILE VIEW -->
+        <section class="step" id="player-profile" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content">
+                <div class="glass-panel scale-reveal glowing-border-blue" style="padding: 30px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div>
+                            <h3 class="brand-font" style="font-size: 1.6rem; color: var(--text-main);">Alex Davis</h3>
+                            <p style="color: var(--neon-blue); font-size: 0.9rem; font-weight: 600;">Football • Striker</p>
+                        </div>
+                        <div class="ready-circle" style="width: 60px; height: 60px; font-size: 1rem; border-width: 1px; margin: 0; box-shadow: 0 0 15px rgba(16,185,129,0.2);">
+                            98%
+                        </div>
+                    </div>
+
+                    <div class="video-placeholder" style="height: 160px; margin-top: 0; background: rgba(14, 165, 233, 0.1); border-color: rgba(14, 165, 233, 0.3);">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                    </div>
+
+                    <div class="profile-grid">
+                        <div class="profile-stat-box">
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 5px;">Consistency Trend</div>
+                            <div style="color: var(--neon-green); font-weight: 700; font-size: 1.1rem;">High <span style="font-size: 0.9rem;">↗</span></div>
+                        </div>
+                        <div class="profile-stat-box">
+                            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 5px;">Recent Matches</div>
+                            <div style="color: var(--text-main); font-weight: 700; font-size: 1.1rem;">3 Goals / 5 Ast</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 10: PLAYER ANALYTICS -->
+        <section class="step" id="player-analytics" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal" style="width: 100%; position: relative; height: 60vh; display: flex; align-items: center;">
+                
+                <div class="glass-panel plan-center-card glowing-border-green" style="padding: 40px 30px;">
+                    <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    </div>
+                    <h3 class="brand-font neon-text" style="color: var(--neon-green); letter-spacing: 1px;">PLAYER INSIGHTS</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Deep dive into performance data.</p>
+                </div>
+
+                <div class="mini-card coach-card-1" style="border-color: var(--neon-green);">📈 Performance Trend</div>
+                <div class="mini-card coach-card-2" style="border-color: var(--neon-green);">⚔️ Match Comparison</div>
+                <div class="mini-card coach-card-3" style="border-color: var(--neon-green);">🎯 Training Consistency</div>
+                <div class="mini-card coach-card-4" style="border-color: var(--neon-green);">⚡ Readiness History</div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 11: CONTACT PLAYER -->
+        <section class="step" id="contact-player" data-node-y="0">
+            <div class="step-node" style="top: 50%;"></div>
+            <div class="step-content reveal">
+                <div class="glass-panel" style="padding: 40px; text-align: center;">
+                    <h3 class="brand-font" style="font-size: 1.5rem; margin-bottom: 10px;">CONTACT PLAYER</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Connect with emerging local talent directly.</p>
+                    
+                    <div class="input-mock" style="margin-bottom: 15px; justify-content: center; background: rgba(0,0,0,0.5);">
+                        <span style="color: var(--text-muted);">Subject: Trial Invitation</span>
+                    </div>
+                    
+                    <div class="input-mock" style="height: 100px; align-items: flex-start; justify-content: flex-start; background: rgba(0,0,0,0.5);">
+                        <span style="color: var(--text-muted);">Message...</span>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, var(--neon-blue), var(--neon-green)); color: #fff; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        Send Connection Request
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FINAL ECOSYSTEM OVERVIEW SECTION -->
+    <footer class="final-section reveal" style="min-height: 100vh; justify-content: center;">
+        
+        <div class="ecosystem-flow">
+            <div class="highlight-player">PLAYER SIDE</div>
+            <div>Preparation</div>
+            <div class="arrow">↓</div>
+            <div>Custom Match Plan</div>
+            <div class="arrow">↓</div>
+            <div>Performance</div>
+            <div class="arrow">↓</div>
+            <div>Video Upload</div>
+            <div class="arrow">↓</div>
+            <div class="highlight-coach">COACH DISCOVERY</div>
+        </div>
+
+        <h2 class="brand-font text-gradient" style="font-size: 2.5rem; max-width: 900px; margin: 0 auto 3rem auto; line-height: 1.3;">
+            Helping Local Talent Prepare with Perfect Match Plans, Perform at Their Peak, and Get Discovered.
+        </h2>
+        <div class="final-logo brand-font" style="transform: scale(1.2);">Pro<span style="color: var(--neon-blue);">Ready</span></div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple Particle Generation
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 40;
+        for (let i = 0; i < particleCount; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            const size = Math.random() * 4 + 2;
+            p.style.width = `${size}px`;
+            p.style.height = `${size}px`;
+            p.style.left = `${Math.random() * 100}vw`;
+            p.style.top = `${Math.random() * 100}vh`;
+            p.style.animationDuration = `${Math.random() * 10 + 5}s`;
+            p.style.animationDelay = `${Math.random() * 5}s`;
+            particlesContainer.appendChild(p);
+        }
+
+        // Scroll Logic for Timeline and Animations
+        const workflowContainer = document.getElementById('workflow');
+        const timelineProgress = document.getElementById('timeline-progress');
+        const steps = document.querySelectorAll('.step');
+        const reveals = document.querySelectorAll('.reveal');
+
+        // Logic for specialized section animations
+        let planGenTriggered = false;
+        let networkTriggered = false;
+
+        function updateOnScroll() {
+            // 1. Calculate Timeline Line Progress
+            const containerRect = workflowContainer.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            
+            // Start filling when the container enters the middle of the screen
+            const startPoint = viewportHeight * 0.5;
+            let progressPixels = startPoint - containerRect.top;
+            
+            if (progressPixels < 0) progressPixels = 0;
+            if (progressPixels > containerRect.height) progressPixels = containerRect.height;
+            
+            const progressPercent = (progressPixels / containerRect.height) * 100;
+            timelineProgress.style.height = `${progressPercent}%`;
+
+            // 2. Activate Steps and Reveal Content
+            steps.forEach(step => {
+                const stepRect = step.getBoundingClientRect();
+                const node = step.querySelector('.step-node');
+                const content = step.querySelector('.reveal');
+                
+                // Activate when step crosses middle of screen
+                if (stepRect.top < viewportHeight * 0.6) {
+                    node.classList.add('active');
+                    if (content) content.classList.add('active');
+                    step.classList.add('active');
+
+                    // Special Animation: Plan Generation
+                    if (step.id === 'plan-gen' && !planGenTriggered) {
+                        planGenTriggered = true;
+                        setTimeout(() => {
+                            const genCard = document.getElementById('gen-card');
+                            const stateGen = document.getElementById('state-gen');
+                            const stateReady = document.getElementById('state-ready');
+                            
+                            genCard.classList.remove('glowing-border-blue');
+                            genCard.classList.add('glowing-border-green');
+                            
+                            stateGen.style.opacity = '0';
+                            setTimeout(() => {
+                                stateGen.style.display = 'none';
+                                stateReady.style.display = 'block';
+                                setTimeout(() => stateReady.style.opacity = '1', 50);
+                            }, 500);
+                        }, 2000); // Wait 2 seconds before showing ready
+                    }
+
+                    // Special Animation: Network View
+                    if (step.id === 'network' && !networkTriggered) {
+                        networkTriggered = true;
+                        // The CSS classes handle the transition via .step.active, 
+                        // but we could add specific delays here if needed.
+                    }
+                }
+            });
+
+            // 3. Reveal elements outside workflow (like footer)
+            reveals.forEach(reveal => {
+                if (!reveal.closest('.step')) { // don't double trigger step content
+                    const rect = reveal.getBoundingClientRect();
+                    if (rect.top < viewportHeight * 0.85) {
+                        reveal.classList.add('active');
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateOnScroll);
+        // Initial check on load
+        setTimeout(updateOnScroll, 100);
+
+    </script>
+</body>
+</html>
