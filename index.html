@@ -791,6 +791,18 @@
         .ecosystem-flow .highlight-player { color: var(--neon-blue); font-weight: 700; }
         .ecosystem-flow .highlight-coach { color: var(--neon-green); font-weight: 700; font-size: 1.2rem; text-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
 
+        .problem-solution-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto 10vh auto;
+            padding: 0 20px;
+        }
+        @media (min-width: 768px) {
+            .problem-solution-grid { grid-template-columns: 1fr 1fr; }
+        }
+
     </style>
 </head>
 <body>
@@ -1130,6 +1142,22 @@
         </section>
 
     </div>
+
+    <!-- PROBLEM & SOLUTION SECTION -->
+    <section class="problem-solution-grid reveal">
+        <div class="glass-panel" style="padding: 40px; border-color: rgba(255, 255, 255, 0.1);">
+            <h3 class="brand-font" style="font-size: 1.5rem; margin-bottom: 15px; color: var(--text-main);">💡 Problem</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.8;">
+                Local athletes struggle to manage proper match preparation and often lack visibility to coaches and scouts. At the same time, coaches rely on scattered social media highlights without structured performance data or consistency tracking.
+            </p>
+        </div>
+        <div class="glass-panel glowing-border-blue" style="padding: 40px;">
+            <h3 class="brand-font neon-text" style="font-size: 1.5rem; margin-bottom: 15px; color: var(--neon-blue);">🚀 Solution</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.8;">
+                ProReady is a sports performance and scouting platform that helps athletes prepare smarter through personalized match plans, readiness tracking, and performance analysis, while also giving them a structured network to showcase gameplay highlights and get discovered by coaches.
+            </p>
+        </div>
+    </section>
 
     <!-- FINAL ECOSYSTEM OVERVIEW SECTION -->
     <footer class="final-section reveal" style="min-height: 100vh; justify-content: center;">
