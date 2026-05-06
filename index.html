@@ -1142,39 +1142,99 @@
         <section class="step" id="network" data-node-y="0">
             <div class="step-node"></div>
             <div class="step-content reveal" style="width: 100%; max-width: 100%;">
-                <div class="network-container">
+                <div style="max-width: 1000px; margin: 0 auto; padding: 0 clamp(15px, 4vw, 30px);">
                     
-                    <!-- View 1: Upload -->
-                    <div class="glass-panel upload-card glowing-border-blue">
-                        <h3 class="brand-font" style="margin-bottom: 10px;">UPLOAD HIGHLIGHT</h3>
-                        <p style="font-size: clamp(0.75rem, 2vw, 0.8rem); color: var(--text-muted);">Share your best moments</p>
-                        
-                        <div class="video-placeholder">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                        </div>
-                        
-                        <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px; font-size: clamp(0.7rem, 2vw, 0.8rem); text-align: left; margin-bottom: 10px;">Title: Match Winning Goal</div>
-                        <div style="background: rgba(14, 165, 233, 0.2); color: var(--neon-blue); padding: 10px; border-radius: 6px; font-weight: 600; font-size: clamp(0.8rem, 2vw, 0.9rem); cursor: pointer; text-align: center;">Publish Video</div>
+                    <!-- Section Title -->
+                    <div style="text-align: center; margin-bottom: clamp(40px, 8vh, 60px);">
+                        <h3 class="brand-font text-gradient" style="font-size: clamp(1.8rem, 5vw, 2.5rem); margin-bottom: 15px;">SHOWCASE YOUR TALENT</h3>
+                        <p style="font-size: clamp(0.85rem, 2.5vw, 1rem); color: var(--text-muted); max-width: 600px; margin: 0 auto;">Upload your match highlights and get discovered by scouts, coaches, and agents in the professional network</p>
                     </div>
 
-                    <!-- View 2: Network -->
-                    <div class="network-view">
-                        <!-- Fluid positioning using percentages -->
-                        <div class="network-line" id="nl1" style="width: 35%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg) translate(80%);"></div>
-                        <div class="network-line" id="nl2" style="width: 45%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(45deg) translate(70%);"></div>
-                        <div class="network-line" id="nl3" style="width: 38%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(160deg) translate(75%);"></div>
-                        <div class="network-line" id="nl4" style="width: 42%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(220deg) translate(70%);"></div>
-
-                        <!-- Nodes -->
-                        <div class="player-node center-node" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                            <svg width="clamp(20px, 5vw, 32px)" height="clamp(20px, 5vw, 32px)" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                        </div>
-                        <div class="player-node" style="top: 20%; left: 80%; transform: translate(-50%, -50%);"><span>Scout</span></div>
-                        <div class="player-node" style="top: 85%; left: 85%; transform: translate(-50%, -50%);"><span>Coach</span></div>
-                        <div class="player-node" style="top: 75%; left: 15%; transform: translate(-50%, -50%);"><span>Player</span></div>
-                        <div class="player-node" style="top: 20%; left: 20%; transform: translate(-50%, -50%);"><span>Agent</span></div>
+                    <!-- Two-Column Layout: Upload & Network -->
+                    <div style="display: grid; grid-template-columns: 1fr; gap: clamp(30px, 8vw, 50px); margin-bottom: clamp(30px, 8vh, 60px);">
                         
-                        <h3 class="brand-font neon-text" style="position: absolute; bottom: -10%; text-align: center; width: 100%;">PLAYER NETWORK</h3>
+                        <!-- LEFT: Upload Section -->
+                        <div class="glass-panel glowing-border-blue">
+                            <div style="display: flex; flex-direction: column; gap: 20px;">
+                                
+                                <!-- Step 1: Upload -->
+                                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                                    <div style="min-width: 40px; width: 40px; height: 40px; background: rgba(14, 165, 233, 0.2); border: 2px solid var(--neon-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 700; color: var(--neon-blue); font-size: clamp(0.9rem, 2vw, 1rem);">1</div>
+                                    <div style="flex: 1;">
+                                        <h4 class="brand-font" style="font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 8px; color: var(--text-main);">Choose Your Video</h4>
+                                        <p style="font-size: clamp(0.75rem, 2vw, 0.85rem); color: var(--text-muted); line-height: 1.5;">Select your best match performance, goal, assist, or highlight moment. Video must be under 2 minutes.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Video Preview Box -->
+                                <div style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(16, 185, 129, 0.05)); border: 2px dashed rgba(14, 165, 233, 0.3); border-radius: 12px; padding: clamp(30px, 6vw, 50px); text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="1.5" style="margin: 0 auto 15px; opacity: 0.6;"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                                    <p style="color: var(--text-muted); font-size: clamp(0.75rem, 2vw, 0.85rem);">Click to upload video or drag & drop</p>
+                                    <p style="color: var(--neon-blue); font-size: clamp(0.7rem, 1.5vw, 0.75rem); margin-top: 8px; font-weight: 600;">MP4, WebM up to 100MB</p>
+                                </div>
+
+                                <!-- Step 2: Details -->
+                                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                                    <div style="min-width: 40px; width: 40px; height: 40px; background: rgba(14, 165, 233, 0.15); border: 2px solid rgba(14, 165, 233, 0.4); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 700; color: var(--neon-blue); font-size: clamp(0.9rem, 2vw, 1rem);">2</div>
+                                    <div style="flex: 1;">
+                                        <h4 class="brand-font" style="font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 8px; color: var(--text-main);">Add Details</h4>
+                                        <p style="font-size: clamp(0.75rem, 2vw, 0.85rem); color: var(--text-muted); line-height: 1.5;">Title your highlight, describe what made it important, and tag your position and skills demonstrated.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: Publish -->
+                                <div style="display: flex; gap: 15px; align-items: flex-start;">
+                                    <div style="min-width: 40px; width: 40px; height: 40px; background: rgba(16, 185, 129, 0.2); border: 2px solid var(--neon-green); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 700; color: var(--neon-green); font-size: clamp(0.9rem, 2vw, 1rem);">3</div>
+                                    <div style="flex: 1;">
+                                        <h4 class="brand-font" style="font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 8px; color: var(--text-main);">Go Live in Network</h4>
+                                        <p style="font-size: clamp(0.75rem, 2vw, 0.85rem); color: var(--text-muted); line-height: 1.5;">Once published, your video becomes visible to scouts, coaches, agents, and other players across the professional network.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Publish Button -->
+                                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(14, 165, 233, 0.1)); padding: 20px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.3); text-align: center; cursor: pointer; transition: all 0.3s ease;">
+                                    <div style="font-weight: 600; color: var(--neon-green); font-size: clamp(0.85rem, 2vw, 0.95rem); margin-bottom: 8px;">Ready to Publish?</div>
+                                    <div style="background: rgba(16, 185, 129, 0.3); color: var(--text-main); padding: 12px 24px; border-radius: 6px; font-weight: 600; font-size: clamp(0.85rem, 2vw, 0.95rem); display: inline-block;">Publish to Network</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network Results -->
+                    <div style="text-align: center; margin-bottom: clamp(20px, 5vh, 30px);">
+                        <p style="font-size: clamp(0.75rem, 2vw, 0.85rem); color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px;">Once Published</p>
+                    </div>
+
+                    <!-- Network Grid: What Happens After Upload -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
+                        
+                        <!-- Card 1: Scouts -->
+                        <div class="glass-panel" style="text-align: center; padding: clamp(20px, 4vw, 30px); border: 1px solid rgba(14, 165, 233, 0.2); transition: all 0.4s ease; cursor: pointer;">
+                            <div style="width: 60px; height: 60px; background: radial-gradient(circle, rgba(14, 165, 233, 0.2), transparent); border: 2px solid var(--neon-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px; font-size: 28px;">🔍</div>
+                            <h4 class="brand-font" style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--text-main); margin-bottom: 8px;">Scouts Find You</h4>
+                            <p style="font-size: clamp(0.7rem, 1.8vw, 0.8rem); color: var(--text-muted); line-height: 1.4;">Professional scouts and talent managers search & discover your highlights</p>
+                        </div>
+
+                        <!-- Card 2: Coaches -->
+                        <div class="glass-panel" style="text-align: center; padding: clamp(20px, 4vw, 30px); border: 1px solid rgba(16, 185, 129, 0.2); transition: all 0.4s ease; cursor: pointer;">
+                            <div style="width: 60px; height: 60px; background: radial-gradient(circle, rgba(16, 185, 129, 0.2), transparent); border: 2px solid var(--neon-green); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px; font-size: 28px;">👥</div>
+                            <h4 class="brand-font" style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--text-main); margin-bottom: 8px;">Coaches Connect</h4>
+                            <p style="font-size: clamp(0.7rem, 1.8vw, 0.8rem); color: var(--text-muted); line-height: 1.4;">Get direct messages from coaches interested in your playing style</p>
+                        </div>
+
+                        <!-- Card 3: Agents -->
+                        <div class="glass-panel" style="text-align: center; padding: clamp(20px, 4vw, 30px); border: 1px solid rgba(255, 165, 0, 0.2); transition: all 0.4s ease; cursor: pointer;">
+                            <div style="width: 60px; height: 60px; background: radial-gradient(circle, rgba(255, 165, 0, 0.2), transparent); border: 2px solid rgba(255, 165, 0, 0.6); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px; font-size: 28px;">🤝</div>
+                            <h4 class="brand-font" style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--text-main); margin-bottom: 8px;">Agents Reach Out</h4>
+                            <p style="font-size: clamp(0.7rem, 1.8vw, 0.8rem); color: var(--text-muted); line-height: 1.4;">Agents offer opportunities to play for top teams and clubs</p>
+                        </div>
+
+                        <!-- Card 4: Opportunities -->
+                        <div class="glass-panel" style="text-align: center; padding: clamp(20px, 4vw, 30px); border: 1px solid rgba(200, 100, 255, 0.2); transition: all 0.4s ease; cursor: pointer;">
+                            <div style="width: 60px; height: 60px; background: radial-gradient(circle, rgba(200, 100, 255, 0.2), transparent); border: 2px solid rgba(200, 100, 255, 0.6); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px; font-size: 28px;">⭐</div>
+                            <h4 class="brand-font" style="font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: var(--text-main); margin-bottom: 8px;">Grow Your Profile</h4>
+                            <p style="font-size: clamp(0.7rem, 1.8vw, 0.8rem); color: var(--text-muted); line-height: 1.4;">Build your professional portfolio and increase visibility</p>
+                        </div>
                     </div>
                 </div>
             </div>
